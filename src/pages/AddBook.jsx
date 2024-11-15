@@ -52,8 +52,8 @@ function AddBook() {
 
     if (!description.trim()) {
       formErrors.description = "Description is required";
-    } else if (!textOnlyRegex.test(description)) {
-      formErrors.description = "Description must contain only alphabetic characters";
+    // } else if (!textOnlyRegex.test(description)) {
+    //   formErrors.description = "Description must contain only alphabetic characters";
     } else if (description.length < 10) {
       formErrors.description = "Description must be at least 10 characters";
     }
