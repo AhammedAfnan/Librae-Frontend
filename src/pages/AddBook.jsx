@@ -36,6 +36,8 @@ function AddBook() {
 
     let formErrors = {};
 
+    const textOnlyRegex = /^[A-Za-z\s]*$/;  // Allows only letters and spaces
+
     if (!title.trim()) {
       formErrors.title = "Title is required";
     } else if (!textOnlyRegex.test(title)) {

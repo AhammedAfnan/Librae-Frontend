@@ -7,19 +7,23 @@ function Home() {
   
   const [books, setBooks] = useState([]);
 
-  // Fetch books from the backend when the component mounts
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/books`); // Replace with your backend URL
-        setBooks(response.data); // Assuming the API response is an array of books
+        const response = await axios.get(`${BASE_URL}/books`);
+        // Ensure the response is an array
+        if (Array.isArray(response.data)) {
+          setBooks(response.data);
+        } else {
+          console.error("Expected an array, but got:", response.data);
+        }
       } catch (error) {
         console.error('Error fetching books:', error);
       }
     };
 
     fetchBooks();
-  }, []); // Empty dependency array means this runs once when the component mounts
+  }, []); 
 
   const deleteBookHandler = async (index) => {
     const bookToDelete = books[index];
@@ -54,7 +58,7 @@ function Home() {
             </tr>
           </thead>
           <tbody>
-            {books.map((book, index) => (
+            {Array.isArray(books) && books.map((book, index) => (
               <tr key={index}>
                 <td className="px-4 py-2 border text-center">{book.title}</td>
                 <td className="px-4 py-2 border text-center">{book.author}</td>
