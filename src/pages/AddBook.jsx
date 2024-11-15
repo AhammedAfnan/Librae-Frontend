@@ -10,6 +10,39 @@ function AddBook() {
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
   const [errors, setErrors] = useState({ title: "", author: "", description: "" });
+
+  const textOnlyRegex = /^[A-Za-z\s]*$/;  // Allows only letters and spaces
+
+  // Validation functions for each field
+  const validateTitle = (value) => {
+    if (!value.trim()) {
+      setErrors((prevErrors) => ({ ...prevErrors, title: "Title is required" }));
+    } else if (!textOnlyRegex.test(value)) {
+      setErrors((prevErrors) => ({ ...prevErrors, title: "Title must contain only alphabetic characters" }));
+    } else {
+      setErrors((prevErrors) => ({ ...prevErrors, title: "" }));
+    }
+  };
+
+  const validateAuthor = (value) => {
+    if (!value.trim()) {
+      setErrors((prevErrors) => ({ ...prevErrors, author: "Author is required" }));
+    } else if (!textOnlyRegex.test(value)) {
+      setErrors((prevErrors) => ({ ...prevErrors, author: "Author must contain only alphabetic characters" }));
+    } else {
+      setErrors((prevErrors) => ({ ...prevErrors, author: "" }));
+    }
+  };
+
+  const validateDescription = (value) => {
+    if (!value.trim()) {
+      setErrors((prevErrors) => ({ ...prevErrors, description: "Description is required" }));
+    } else if (value.length < 10) {
+      setErrors((prevErrors) => ({ ...prevErrors, description: "Description must be at least 10 characters" }));
+    } else {
+      setErrors((prevErrors) => ({ ...prevErrors, description: "" }));
+    }
+  };
   
 
   const addBook = async ({ title, author, description }) => {
@@ -35,8 +68,6 @@ function AddBook() {
 
 
     let formErrors = {};
-
-    const textOnlyRegex = /^[A-Za-z\s]*$/;  // Allows only letters and spaces
 
     if (!title.trim()) {
       formErrors.title = "Title is required";
@@ -74,7 +105,10 @@ function AddBook() {
           <input
             type="text"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => { 
+            setTitle(e.target.value);
+            validateTitle(e.target.value);
+            }}
             className="w-full px-4 py-2 border rounded"
             placeholder="Enter book title"
           />
@@ -86,7 +120,10 @@ function AddBook() {
           <input
             type="text"
             value={author}
-            onChange={(e) => setAuthor(e.target.value)}
+            onChange={(e) => { 
+            setAuthor(e.target.value);
+            validateAuthor(e.target.value);
+            }}
             className="w-full px-4 py-2 border rounded"
             placeholder="Enter author name"
           />
@@ -97,7 +134,10 @@ function AddBook() {
           <label className="block font-medium mb-1">Description</label>
           <textarea
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={(e) => { 
+            setDescription(e.target.value)
+            validateDescription(e.target.value)
+            }}
             className="w-full px-4 py-2 border rounded"
             placeholder="Enter book description"
           />
